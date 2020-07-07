@@ -15,7 +15,9 @@ class IndexPost extends React.Component {
       <React.Fragment>
         <div className="row product-main">
           {data.data.allCategory.nodes.map(items => (
-            <div className="Catalogue__item col-sm-12 col-md-6 col-lg-4" key={items.id}>
+            
+            <div className="Catalogue__item col-sm-12 col-md-6 col-lg-4"  key={items.id}>
+              <a href={`/${items.slug}`}  >
               <div className="details_List">
 
                   { items.image && items.image[0] ? <Img sizes={{
@@ -33,7 +35,9 @@ class IndexPost extends React.Component {
                   </h2>
                 </div>
               </div>
+              </a>
             </div>
+            
           ))}
         </div>
       </React.Fragment>

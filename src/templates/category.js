@@ -15,6 +15,7 @@ class IndexCategory extends React.Component {
         <div className="row product-main">
           {data.data.allProduct.nodes.map(items => (
             <div className="Catalogue__item col-sm-12 col-md-6 col-lg-4" key={items.id}>
+              <a href={`/${data.data.category.slug}/${items.slug}`}  >
               <div className="details_List">
 
                   { items.productImage && items.productImage[0] ? <Img sizes={{
@@ -50,6 +51,7 @@ class IndexCategory extends React.Component {
                   </div>
                 </div>
               </div>
+              </a>
             </div>
           ))}
         </div>
