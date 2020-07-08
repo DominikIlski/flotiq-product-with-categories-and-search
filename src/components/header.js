@@ -1,14 +1,38 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
-import React from "react"
+
 import "../css/font-awesome.css"
 import "bootstrap/dist/css/bootstrap.css"
 import "../css/style.css"
 import logo from "../images/oneshopper-logo.png"
+import React, {useState, useEffect} from "react"
+
+const IndexSearch = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const allCategories = await fetch(
+        `${process.env.GATSBY_FLOTIQ_BASE_URL}/api/v1/content/category?order_by=name`,
+        {
+          headers: { "x-auth-token": process.env.GATSBY_FLOTIQ_API_KEYd },
+        }
+      ).then(res => res.json());
+      setCategories(allCategories);
+    })();    
+  }, [])
+  console.log('-----------------------------------------------------------TEST---------------------------------------');
+
+  console.log(categories);
+  <div></div>
+}
+
+
 
 const Header = ({ siteTitle }) => (
   <header className="site-header">
     <div className="container">
+    
       <div className="row">
         <div className="col-sm-12 col-md-4 align-self-center">
           <Link className="header-logo" to="/">
@@ -22,6 +46,7 @@ const Header = ({ siteTitle }) => (
                 <Link className="nav-link" to="/">
                   Home
                 </Link>
+                <IndexSearch />
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/about">
