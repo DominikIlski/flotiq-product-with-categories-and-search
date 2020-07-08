@@ -1,6 +1,32 @@
-import React from "react"
+
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+
+import React, {useState, useEffect} from "react"
+
+const IndexSearch = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const allCategories = await fetch(
+        `${process.env.GATSBY_FLOTIQ_BASE_URL}/api/v1/content/category?order_by=name`,
+        {
+          headers: { "x-auth-token": process.env.GATSBY_FLOTIQ_API_KEYd },
+        }
+      ).then(res => res.json());
+      setCategories(allCategories);
+    })();    
+  }, [])
+  console.log('-----------------------------------------------------------TEST---------------------------------------');
+
+  console.log(categories);
+  
+}
+
+
+
+
 class About extends React.Component {
     render() {
         return ( <Layout>
@@ -13,7 +39,7 @@ class About extends React.Component {
                             <p>Ecommerce starter: <a href="https://www.gatsbyjs.org/">Gatsby</a> + <a href="https://flotiq.com">Flotiq</a> + <a href="https://snipcart.com">Snipcart</a>.</p>
                             <p>Live Demo: <a href="https://flotiq-starter-products.herokuapp.com">https://flotiq-starter-products.herokuapp.com</a></p>
                             <p>Quick start: <a href="https://github.com/flotiq/gatsby-starter-products/blob/master/README.md">https://github.com/flotiq/gatsby-starter-products</a></p>
-
+                            <IndexSearch/>
 
                             <ul>
                                 <li>
@@ -52,3 +78,4 @@ class About extends React.Component {
     }
 }
 export default About
+

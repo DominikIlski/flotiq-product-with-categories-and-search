@@ -5,27 +5,7 @@ import "../css/font-awesome.css"
 import "bootstrap/dist/css/bootstrap.css"
 import "../css/style.css"
 import logo from "../images/oneshopper-logo.png"
-import React, {useState, useEffect} from "react"
 
-const IndexSearch = () => {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    (async () => {
-      const allCategories = await fetch(
-        `${process.env.GATSBY_FLOTIQ_BASE_URL}/api/v1/content/category?order_by=name`,
-        {
-          headers: { "x-auth-token": process.env.GATSBY_FLOTIQ_API_KEYd },
-        }
-      ).then(res => res.json());
-      setCategories(allCategories);
-    })();    
-  }, [])
-  console.log('-----------------------------------------------------------TEST---------------------------------------');
-
-  console.log(categories);
-  <div></div>
-}
 
 
 
