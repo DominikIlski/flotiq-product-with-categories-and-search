@@ -45,7 +45,7 @@ class IndexPost extends React.Component {
   }
 }
 
-const IndexPage = data => (
+const IndexPage = (data) => (
 
   <Layout>
     <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
