@@ -14,14 +14,14 @@ class IndexPost extends React.Component {
     return (
       <React.Fragment>
         <div className="row product-main">
-          {data.data.allCategory.nodes.map(items => (
+          {data.data.allCategory.nodes.map(item => (
             
-            <div className="Catalogue__item col-sm-12 col-md-6 col-lg-4"  key={items.id}>
-              <a href={`/${items.slug}`}  >
+            <div className="Catalogue__item col-sm-12 col-md-6 col-lg-4"  key={item.id}>
+              <a href={`/${item.slug}`}  >
               <div className="details_List">
 
-                  { items.image && items.image[0] ? <Img sizes={{
-                      "src": `${process.env.GATSBY_FLOTIQ_BASE_URL}/image/1920x0/${items.image[0].id}.${items.image[0].extension}`,
+                  { item.image && item.image[0] ? <Img sizes={{
+                      "src": `${process.env.GATSBY_FLOTIQ_BASE_URL}/image/1920x0/${item.image[0].id}.${item.image[0].extension}`,
                       "aspectRatio": 1.77,
                       "sizes": '',
                       "srcSet": ''
@@ -31,7 +31,7 @@ class IndexPost extends React.Component {
                   <div className="details_inner">
 
                   <h2>
-                    <Link to={`/${items.slug}`}>{items.name}</Link>
+                    <Link to={`/${item.slug}`}>{item.name}</Link>
                   </h2>
                 </div>
               </div>
