@@ -5,7 +5,7 @@ import "../css/font-awesome.css"
 import "bootstrap/dist/css/bootstrap.css"
 import "../css/style.css"
 import logo from "../images/oneshopper-logo.png"
-
+import React from 'react'
 
 
 
@@ -26,7 +26,7 @@ const Header = ({ siteTitle }) => (
                 <Link className="nav-link" to="/">
                   Home
                 </Link>
-                <IndexSearch />
+                
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/about">
