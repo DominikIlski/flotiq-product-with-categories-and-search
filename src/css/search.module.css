@@ -1,0 +1,16 @@
+.row {
+    display: flex;
+    border: 1px solid red;
+  }
+  
+  .left {
+    width: 20%;
+    border: 1px solid red;
+
+  }
+  
+  .right {
+    width: 80%;
+    border: 1px solid red;
+
+  }
