@@ -71,7 +71,8 @@ const Items = ({ pageData }) => {
   console.log("items")
   console.log(pageData)
   console.log(pageData.data)
-
+  if(pageData.data)
+    console.log(`${process.env.GATSBY_FLOTIQ_BASE_URL}/image/1920x0${pageData.data}`)
   return (
     <div className="row product-main">
       {pageData &&
@@ -86,7 +87,7 @@ const Items = ({ pageData }) => {
                 {item.item.image && item.item.image[0] ? (
                   <Img
                     sizes={{
-                      src: `${process.env.GATSBY_FLOTIQ_BASE_URL}${item.item.productImage[0].dataUrl}`,
+                      src: `${process.env.GATSBY_FLOTIQ_BASE_URL}/image/1920x0${item.item.productImage[0].dataUrl.split('/')[4]}`,
                       aspectRatio: 1.77,
                       sizes: "",
                       srcSet: "",
