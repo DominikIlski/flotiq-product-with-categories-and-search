@@ -1,10 +1,9 @@
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import styles from "../css/search.module.css"
-
+import Link from "gatsby"
+import Img from "gatsby-image"
 import React, { useState, useEffect } from "react"
-import IndexPost from "./index.js"
-
 
 const CheckBox = ({ item, selectedCat, handleCheck }) => {
   return (
@@ -40,12 +39,12 @@ const IndexSearch = ({
       ).then(res => res.json())
       setCategories(allCategories.data)
     })()
-  })
+  }, [])
 
   const handleSelectCat = name => {
-    let newSelections = [...selectedCat]
+    const newSelections = [...selectedCat]
     if (newSelections.includes(name)) {
-      let index = newSelections.indexOf(name)
+      const index = newSelections.indexOf(name)
       newSelections.splice(index, 1)
     } else {
       newSelections.push(name)
@@ -68,35 +67,72 @@ const IndexSearch = ({
   )
 }
 
+const Items = ({ pageData }) => {
+  console.log("items")
+  console.log(pageData)
+  console.log(pageData.data)
+
+  return (
+    <div className="row product-main">
+      {pageData &&
+        pageData.data &&
+        pageData.data.map(item => (
+          <div
+            className="Catalogue__item col-sm-12 col-md-6 col-lg-4"
+            key={item.item.id}
+          >
+            <a href={`/${item.item.slug}`}>
+              <div className="details_List">
+                {item.item.image && item.item.image[0] ? (
+                  <Img
+                    sizes={{
+                      src: `${process.env.GATSBY_FLOTIQ_BASE_URL}${item.item.productImage[0].dataUrl}`,
+                      aspectRatio: 1.77,
+                      sizes: "",
+                      srcSet: "",
+                    }}
+                  />
+                ) : (
+                  <div className="no-image">No Image</div>
+                )}
+
+                <div className="details_inner">
+                  
+                <h2>{item.item.name}</h2>
+                  
+                </div>
+              </div>
+            </a>
+          </div>
+        ))}
+    </div>
+  )
+}
+
 const Search = () => {
   const [categories, setCategories] = useState([])
   const [selectedCat, setSelectedCat] = useState([])
-  const [pageData, setPageDate] = useState([])
+  const [pageData, setPageDate] = useState({})
   const contentType = "content_type[]=coffee"
   const basicQuerryString = `${process.env.GATSBY_FLOTIQ_BASE_URL}/api/v1/search?${contentType}&q=`
   useEffect(() => {
-    let selectedIds = []
-    for (let i = 0; i < selectedCat.length; i++) {
-      selectedIds.push(
-        `"${categories.find(item => item.name === selectedCat[i]).id}"`
-      )
-    }
+
+    const selectedIds = categories
+      .filter(item => selectedCat.includes(item.name))
+      .map(item => `"${item.id}"`);
+    
     if (selectedIds.length === 0) selectedIds.push("*")
     ;(async () => {
-      {
-        let data = await fetch(
-          `${basicQuerryString}${selectedIds.toString().replace(/,/g, " ")}`,
-          {
-            headers: { "x-auth-token": process.env.GATSBY_FLOTIQ_API_KEY },
-          }
-        ).then(res => res.json())
-        console.log(
-          `${basicQuerryString}${selectedIds.toString().replace(/,/g, " ")}`
-        )
-        setPageDate(data)
-      }
+      const data = await fetch(
+        `${basicQuerryString}${selectedIds.toString().replace(/,/g, " ")}`,
+        {
+          headers: { "x-auth-token": process.env.GATSBY_FLOTIQ_API_KEY },
+        }
+      ).then(res => res.json())
+      console.log("after featch")
+      console.log(data)
+      setPageDate(data)
     })()
-    console.log(pageData)
   }, [selectedCat])
 
   return (
@@ -120,12 +156,7 @@ const Search = () => {
                   />
                 </div>
                 <div className={styles.right}>
-                  <div className="container">
-                    <div className="text-center mt-5">
-                      <h2 className="with-underline">Categories</h2>
-                    </div>
-                    <IndexPost data={pageData} />
-                  </div>
+                  <Items pageData={pageData}/>
                 </div>
               </div>
             </div>
