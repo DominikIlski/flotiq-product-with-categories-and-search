@@ -1,7 +1,10 @@
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import styles from "../css/search.module.css"
+
 import React, { useState, useEffect } from "react"
+import IndexPost from "./index.js"
+
 
 const CheckBox = ({ item, selectedCat, handleCheck }) => {
   return (
@@ -69,15 +72,16 @@ const Search = () => {
   const [categories, setCategories] = useState([])
   const [selectedCat, setSelectedCat] = useState([])
   const [pageData, setPageDate] = useState([])
-  const contentType = 'content_type[]=coffee'
+  const contentType = "content_type[]=coffee"
   const basicQuerryString = `${process.env.GATSBY_FLOTIQ_BASE_URL}/api/v1/search?${contentType}&q=`
   useEffect(() => {
     let selectedIds = []
     for (let i = 0; i < selectedCat.length; i++) {
-      selectedIds.push(`"${categories.find(item => item.name === selectedCat[i]).id}"`)
+      selectedIds.push(
+        `"${categories.find(item => item.name === selectedCat[i]).id}"`
+      )
     }
-    if(selectedIds.length === 0)
-      selectedIds.push("*")
+    if (selectedIds.length === 0) selectedIds.push("*")
     ;(async () => {
       {
         let data = await fetch(
@@ -86,13 +90,13 @@ const Search = () => {
             headers: { "x-auth-token": process.env.GATSBY_FLOTIQ_API_KEY },
           }
         ).then(res => res.json())
-        console.log(`${basicQuerryString}${selectedIds.toString().replace(/,/g, " ")}`)
-        console.log(data)
+        console.log(
+          `${basicQuerryString}${selectedIds.toString().replace(/,/g, " ")}`
+        )
         setPageDate(data)
       }
     })()
     console.log(pageData)
-    
   }, [selectedCat])
 
   return (
@@ -115,7 +119,14 @@ const Search = () => {
                     setSelectedCat={setSelectedCat}
                   />
                 </div>
-                <div className={styles.right}></div>
+                <div className={styles.right}>
+                  <div className="container">
+                    <div className="text-center mt-5">
+                      <h2 className="with-underline">Categories</h2>
+                    </div>
+                    <IndexPost data={pageData} />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
