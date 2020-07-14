@@ -1,16 +1,13 @@
 .row {
     display: flex;
-    border: 1px solid black;
   }
   
   .left {
     width: 20%;
-    border: 1px solid black;
 
   }
   
   .right {
     width: 80%;
-    border: 1px solid black;
 
   }
