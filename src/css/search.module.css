@@ -1,13 +1,19 @@
 .row {
-    display: flex;
-  }
-  
-  .left {
-    width: 20%;
+  display: flex;
+}
 
-  }
+.left {
+  width: 20%;
+  display: flex;
+  justify-content: center;
   
-  .right {
-    width: 80%;
+}
 
-  }
+.right {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+}
+

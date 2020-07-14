@@ -4,7 +4,7 @@ import styles from "../css/search.module.css"
 import Link from "gatsby"
 import Img from "gatsby-image"
 import React, { useState, useEffect } from "react"
-
+import Spinner from "react-bootstrap/Spinner"
 const CheckBox = ({ item, selectedCat, handleCheck }) => {
   return (
     <div>
@@ -53,26 +53,26 @@ const IndexSearch = ({
   }
   return (
     <div>
-      <div className="text mt-5">
-        <h2 className="with-underline">Categories</h2>
-      </div>
-      {categories.map(item => (
-        <CheckBox
-          item={item}
-          selectedCat={selectedCat}
-          handleCheck={handleSelectCat}
-        />
-      ))}
+      <h2 className="with-underline">Categories</h2>
+
+      {categories[0] ? (
+        categories.map(item => (
+          <CheckBox
+            item={item}
+            selectedCat={selectedCat}
+            handleCheck={handleSelectCat}
+          />
+        ))
+      ) : (
+        <Spinner className="center" animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      )}
     </div>
   )
 }
 
 const Items = ({ pageData }) => {
-  console.log("items")
-  console.log(pageData)
-  console.log(pageData.data)
-  if(pageData.data)
-    console.log(`${process.env.GATSBY_FLOTIQ_BASE_URL}/image/1920x0/${pageData.data[0].item.productImage[0].dataUrl.split('/')[5]}.jpg`)
   return (
     <div className="row product-main">
       {pageData &&
@@ -84,10 +84,14 @@ const Items = ({ pageData }) => {
           >
             <a href={`/${item.item.slug}`}>
               <div className="details_List">
-                {item.item.image && item.item.image[0] ? (
+                {item.item.productImage && item.item.productImage[0] ? (
                   <Img
                     sizes={{
-                      src: `${process.env.GATSBY_FLOTIQ_BASE_URL}/image/1920x0${item.item.productImage[0].dataUrl.split('/')[5]}.jpg`,
+                      src: `${
+                        process.env.GATSBY_FLOTIQ_BASE_URL
+                      }/image/1920x0/${
+                        item.item.productImage[0].dataUrl.split("/")[5]
+                      }.jpg`,
                       aspectRatio: 1.77,
                       sizes: "",
                       srcSet: "",
@@ -98,9 +102,7 @@ const Items = ({ pageData }) => {
                 )}
 
                 <div className="details_inner">
-                  
-                <h2>{item.item.name}</h2>
-                  
+                  <h2>{item.item.name}</h2>
                 </div>
               </div>
             </a>
@@ -117,11 +119,10 @@ const Search = () => {
   const contentType = "content_type[]=coffee"
   const basicQuerryString = `${process.env.GATSBY_FLOTIQ_BASE_URL}/api/v1/search?${contentType}&q=`
   useEffect(() => {
-
     const selectedIds = categories
       .filter(item => selectedCat.includes(item.name))
-      .map(item => `"${item.id}"`);
-    
+      .map(item => `"${item.id}"`)
+
     if (selectedIds.length === 0) selectedIds.push("*")
     ;(async () => {
       const data = await fetch(
@@ -130,8 +131,6 @@ const Search = () => {
           headers: { "x-auth-token": process.env.GATSBY_FLOTIQ_API_KEY },
         }
       ).then(res => res.json())
-      console.log("after featch")
-      console.log(data)
       setPageDate(data)
     })()
   }, [selectedCat])
@@ -143,10 +142,6 @@ const Search = () => {
         <div className="container">
           <div className="row">
             <div className="col-sm-12">
-              <div className="text-center mt-5">
-                <h1>QuickSearch</h1>
-              </div>
-
               <div className={styles.row}>
                 <div className={styles.left}>
                   <IndexSearch
@@ -157,7 +152,13 @@ const Search = () => {
                   />
                 </div>
                 <div className={styles.right}>
-                  <Items pageData={pageData}/>
+                  {pageData.data ? (
+                    <Items pageData={pageData} />
+                  ) : (
+                    <Spinner animation="border" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </Spinner>
+                  )}
                 </div>
               </div>
             </div>
