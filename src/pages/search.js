@@ -1,7 +1,6 @@
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import styles from "../css/search.module.css"
-import Link from "gatsby"
 import Img from "gatsby-image"
 import React, { useState, useEffect } from "react"
 import Spinner from "react-bootstrap/Spinner"
@@ -32,7 +31,7 @@ const IndexSearch = ({
   useEffect(() => {
     ;(async () => {
       const allCategories = await fetch(
-        `${process.env.GATSBY_FLOTIQ_BASE_URL}/api/v1/content/coffeecat?order_by=name`,
+        `${process.env.GATSBY_FLOTIQ_BASE_URL}/api/v1/content/category?order_by=name`,
         {
           headers: { "x-auth-token": process.env.GATSBY_FLOTIQ_API_KEY },
         }
@@ -72,17 +71,25 @@ const IndexSearch = ({
   )
 }
 
-const Items = ({ pageData }) => {
+const Items = ({ categories, pageData }) => {
+  console.log(pageData)
+  console.log(categories[0])
+  console.log("tutaj ma być data info")
+  if(pageData)
+  console.log(pageData.data[0].item.category[0].dataUrl.split('/')[5])
+  console.log("koniec dataInfo")
+  
   return (
     <div className="row product-main">
       {pageData &&
         pageData.data &&
         pageData.data.map(item => (
+            
           <div
             className="Catalogue__item col-sm-12 col-md-6 col-lg-4"
             key={item.item.id}
           >
-            <a href={`/${item.item.slug}`}>
+            <a href={`${categories.find(category => category.id === item.item.category[0].dataUrl.split('/')[5]).slug}/${item.item.slug}`}>
               <div className="details_List">
                 {item.item.productImage && item.item.productImage[0] ? (
                   <Img
@@ -116,7 +123,7 @@ const Search = () => {
   const [categories, setCategories] = useState([])
   const [selectedCat, setSelectedCat] = useState([])
   const [pageData, setPageDate] = useState({})
-  const contentType = "content_type[]=coffee"
+  const contentType = "content_type[]=product"
   const basicQuerryString = `${process.env.GATSBY_FLOTIQ_BASE_URL}/api/v1/search?${contentType}&q=`
   useEffect(() => {
     const selectedIds = categories
@@ -153,7 +160,7 @@ const Search = () => {
                 </div>
                 <div className={styles.right}>
                   {pageData.data ? (
-                    <Items pageData={pageData} />
+                    <Items categories={categories} pageData={pageData} />
                   ) : (
                     <Spinner animation="border" role="status">
                       <span className="sr-only">Loading...</span>

@@ -102,7 +102,6 @@ export const query = graphql`
       name
       price
       description
-      option
       productImage {
         id
         extension
