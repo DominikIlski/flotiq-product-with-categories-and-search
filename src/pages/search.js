@@ -42,7 +42,7 @@ const IndexSearch = ({
       ).then(res => res.json())
       setCategories(allCategories.data)
     })()
-  }, [])
+  }, [setCategories])
 
   const handleSelectCat = name => {
     const newSelections = [...selectedCat]
@@ -143,7 +143,7 @@ const Search = () => {
       ).then(res => res.json())
       setPageDate(data)
     })()
-  }, [selectedCat])
+  }, [selectedCat, categories])
 
   return (
     <Layout>
