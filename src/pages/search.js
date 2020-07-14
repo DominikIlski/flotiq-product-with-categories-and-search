@@ -4,6 +4,10 @@ import styles from "../css/search.module.css"
 import Img from "gatsby-image"
 import React, { useState, useEffect } from "react"
 import Spinner from "react-bootstrap/Spinner"
+
+const contentType = "content_type[]=product"
+const basicQuerryString = `${process.env.GATSBY_FLOTIQ_BASE_URL}/api/v1/search?${contentType}&q=`
+
 const CheckBox = ({ item, selectedCat, handleCheck }) => {
   return (
     <div>
@@ -72,24 +76,25 @@ const IndexSearch = ({
 }
 
 const Items = ({ categories, pageData }) => {
-  console.log(pageData)
-  console.log(categories[0])
-  console.log("tutaj ma być data info")
-  if(pageData)
-  console.log(pageData.data[0].item.category[0].dataUrl.split('/')[5])
-  console.log("koniec dataInfo")
-  
+  if (pageData)
+
   return (
     <div className="row product-main">
       {pageData &&
         pageData.data &&
         pageData.data.map(item => (
-            
           <div
             className="Catalogue__item col-sm-12 col-md-6 col-lg-4"
             key={item.item.id}
           >
-            <a href={`${categories.find(category => category.id === item.item.category[0].dataUrl.split('/')[5]).slug}/${item.item.slug}`}>
+            <a
+              href={`${
+                categories.find(
+                  category =>
+                    category.id === item.item.category[0].dataUrl.split("/")[5]
+                ).slug
+              }/${item.item.slug}`}
+            >
               <div className="details_List">
                 {item.item.productImage && item.item.productImage[0] ? (
                   <Img
@@ -123,8 +128,6 @@ const Search = () => {
   const [categories, setCategories] = useState([])
   const [selectedCat, setSelectedCat] = useState([])
   const [pageData, setPageDate] = useState({})
-  const contentType = "content_type[]=product"
-  const basicQuerryString = `${process.env.GATSBY_FLOTIQ_BASE_URL}/api/v1/search?${contentType}&q=`
   useEffect(() => {
     const selectedIds = categories
       .filter(item => selectedCat.includes(item.name))
