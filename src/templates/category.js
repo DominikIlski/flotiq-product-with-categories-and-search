@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql, Link } from "gatsby"
+import { graphql} from "gatsby"
 import Img from "gatsby-image"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -33,9 +33,7 @@ class IndexCategory extends React.Component {
 
                   <div className="details_inner">
                     <h2>
-                      <Link to={`/${data.data.category.slug}/${item.slug}`}>
                         {item.name}
-                      </Link>
                     </h2>
                     <div className="row">
                       <div className="col-sm-4 align-self-center">

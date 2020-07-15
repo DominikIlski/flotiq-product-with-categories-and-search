@@ -77,51 +77,92 @@ const IndexSearch = ({
 
 const Items = ({ categories, pageData }) => {
   if (pageData)
-
-  return (
-    <div className="row product-main">
-      {pageData &&
-        pageData.data &&
-        pageData.data.map(item => (
-          <div
-            className="Catalogue__item col-sm-12 col-md-6 col-lg-4"
-            key={item.item.id}
-          >
-            <a
-              href={`${
-                categories.find(
-                  category =>
-                    category.id === item.item.category[0].dataUrl.split("/")[5]
-                ).slug
-              }/${item.item.slug}`}
+    return (
+      <div className="row product-main">
+        {pageData &&
+          pageData.data &&
+          pageData.data.map(item => (
+            <div
+              className="Catalogue__item col-sm-12 col-md-6 col-lg-4"
+              key={item.item.id}
             >
-              <div className="details_List">
-                {item.item.productImage && item.item.productImage[0] ? (
-                  <Img
-                    sizes={{
-                      src: `${
-                        process.env.GATSBY_FLOTIQ_BASE_URL
-                      }/image/1920x0/${
-                        item.item.productImage[0].dataUrl.split("/")[5]
-                      }.jpg`,
-                      aspectRatio: 1.77,
-                      sizes: "",
-                      srcSet: "",
-                    }}
-                  />
-                ) : (
-                  <div className="no-image">No Image</div>
-                )}
+              <a
+                href={`${
+                  categories.find(
+                    category =>
+                      category.id ===
+                      item.item.category[0].dataUrl.split("/")[5]
+                  ).slug
+                }/${item.item.slug}`}
+              >
+                <div className="details_List">
+                  {item.item.productImage && item.item.productImage[0] ? (
+                    <Img
+                      sizes={{
+                        src: `${
+                          process.env.GATSBY_FLOTIQ_BASE_URL
+                        }/image/1920x0/${
+                          item.item.productImage[0].dataUrl.split("/")[5]
+                        }.jpg`,
+                        aspectRatio: 1.77,
+                        sizes: "",
+                        srcSet: "",
+                      }}
+                    />
+                  ) : (
+                    <div className="no-image">No Image</div>
+                  )}
 
-                <div className="details_inner">
-                  <h2>{item.item.name}</h2>
+                  <div className="details_inner">
+                    <h2>{item.item.name}</h2>
+                    <div className="row">
+                      <div className="col-sm-4 align-self-center">
+                        <span className="price">${item.item.price}</span>
+                      </div>
+                      <div className="col-sm-8 text-right align-self-center">
+                        <a
+                          href={`${
+                            categories.find(
+                              category =>
+                                category.id ===
+                                item.item.category[0].dataUrl.split("/")[5]
+                            ).slug
+                          }`}
+                          className="Product snipcart-add-item"
+                          data-item-id={item.item.slug}
+                          data-item-price={item.item.price}
+                          data-item-image={
+                            item.item.productImage && item.item.productImage[0]
+                              ? `${
+                                  process.env.GATSBY_FLOTIQ_BASE_URL
+                                }/image/1920x0/${
+                                  item.item.productImage[0].dataUrl.split(
+                                    "/"
+                                  )[5]
+                                }.jpg`
+                              : ""
+                          }
+                          data-item-name={item.item.name}
+                          data-item-url={`${
+                            categories.find(
+                              category =>
+                                category.id ===
+                                item.item.category[0].dataUrl.split("/")[5]
+                            ).slug
+                          }`}
+                        >
+                          <i className="fas fa-shopping-bag" />
+                          Add to Cart
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </a>
-          </div>
-        ))}
-    </div>
-  )
+              </a>
+            </div>
+          ))}
+      </div>
+    )
 }
 
 const Search = () => {
@@ -161,15 +202,17 @@ const Search = () => {
                     setSelectedCat={setSelectedCat}
                   />
                 </div>
-                <div className={styles.right}>
-                  {pageData.data ? (
+                {pageData.data ? (
+                  <div className={styles.right}>
                     <Items categories={categories} pageData={pageData} />
-                  ) : (
+                  </div>
+                ) : (
+                  <div className={styles.rightCenter}>
                     <Spinner animation="border" role="status">
                       <span className="sr-only">Loading...</span>
                     </Spinner>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

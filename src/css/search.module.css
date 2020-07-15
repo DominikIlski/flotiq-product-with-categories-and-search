@@ -11,8 +11,11 @@
 
 .right {
   width: 80%;
+}
+
+.rightCenter {
+  width: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
