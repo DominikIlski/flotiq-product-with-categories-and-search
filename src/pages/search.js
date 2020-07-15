@@ -67,9 +67,11 @@ const IndexSearch = ({
           />
         ))
       ) : (
-        <Spinner className="center" animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+        <div>
+          <Spinner className="center" animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        </div>
       )}
     </div>
   )
